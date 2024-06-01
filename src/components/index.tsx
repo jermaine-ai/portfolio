@@ -10,17 +10,45 @@ type CarouselItemType = {
 export const BackgroundAnimation = ({ animation }: { animation: string }) => (
   <pre>{"[animation] " + animation}</pre>
 );
-export const Page = ({ children }: { children: React.ReactNode }) => (
-  <main
-    style={{
-      margin: "0 auto",
-      maxWidth: "1440px",
-      width: "100%",
-      border: "thin solid red",
-    }}
-  >
-    {children}
-  </main>
+
+type PageProps = {
+  children: React.ReactNode;
+  sections?: {
+    nav?: JSX.Element;
+    fluid?: JSX.Element;
+  };
+  mainFluid?: boolean;
+};
+export const Page = (props: PageProps) => (
+  <>
+    {/* Nav */}
+    {props?.sections?.nav && (
+      <div
+        style={{ width: "100%", border: "thin solid blue", display: "flex" }}
+      >
+        {props.sections?.nav}
+      </div>
+    )}
+    {/* Fluid */}
+    {props?.sections?.fluid && (
+      <div
+        style={{ width: "100%", border: "thin solid orange", display: "flex" }}
+      >
+        {props.sections?.fluid}
+      </div>
+    )}
+    {/* Main */}
+    <main
+      style={{
+        margin: "0 auto",
+        maxWidth: props?.mainFluid ? "unset" : "1280px",
+        width: "100%",
+        border: "thin solid limegreen",
+      }}
+    >
+      {props?.children}
+    </main>
+  </>
 );
 export const Section = ({
   hero,

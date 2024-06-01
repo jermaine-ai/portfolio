@@ -68,7 +68,20 @@ export const ContactForm = () => {
 
 export function ContactPage() {
   return (
-    <Page>
+    <Page
+      sections={{
+        nav: (
+          <div style={{ background: "#333", height: "40px", width: "100%" }}>
+            <pre style={{ color: "white" }}>Nav</pre>
+          </div>
+        ),
+        fluid: (
+          <div
+            style={{ background: "cyan", height: "240px", width: "100%" }}
+          ></div>
+        ),
+      }}
+    >
       <pre>Contact Page</pre>
       <AnimatedTimeline />
       <Testimonials />

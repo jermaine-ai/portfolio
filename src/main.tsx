@@ -6,11 +6,16 @@ import "./index.css";
 import { ContactPage } from "./pages/contact";
 import { HomePage } from "./pages/home";
 import { WorkPage } from "./pages/work";
+import { AboutPage } from "./pages/about";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
+  },
+  {
+    path: "/about",
+    element: <AboutPage />,
   },
   {
     path: "/contact",

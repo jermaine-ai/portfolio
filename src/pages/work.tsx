@@ -19,61 +19,22 @@ export const MasonryGrid = ({ items }: { items: Array<MasonryItemType> }) => {
   return (
     <div
       style={{
-        margin: "0 auto",
         display: "flex",
-        flexWrap: "wrap",
-        width: "100%",
+        overflowX: "scroll",
         justifyContent: "space-evenly",
-        maxWidth: "1280px",
       }}
     >
-      <div>
-        <img
-          style={{
-            transform: "translateX(-10px)",
-            objectFit: "cover",
-            width: "100vw",
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-          }}
-          alt={items?.[0].text}
-          src={items?.[0].imgURL}
-          width={800}
-          height={440}
-        />
-      </div>
-      <div
-        style={{
-          marginTop: "440px",
-          display: "flex",
-          justifyContent: "space-evenly",
-          width: "100vw",
-          overflowX: "scroll",
-        }}
-      >
-        {items.map((_item, _index) => {
-          if (_index === 0) {
-            return <></>;
-          } else {
-            return (
-              <div
-                style={{ marginRight: _index === 0 ? "0px" : "16px" }}
-                onClick={() => _item.onClickFn()}
-                key={_index}
-              >
-                <img
-                  alt={_item.text}
-                  src={_item.imgURL}
-                  width={240}
-                  height={320}
-                />
-              </div>
-            );
-          }
-        })}
-      </div>
+      {items.map((_item, _index) => {
+        return (
+          <div
+            style={{ marginRight: "16px" }}
+            onClick={() => _item.onClickFn()}
+            key={_index}
+          >
+            <img alt={_item.text} src={_item.imgURL} width={240} height={320} />
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -87,7 +48,7 @@ export const Modal = ({
   toggleModalFn: (openState: boolean) => void;
   content: JSX.Element;
 }) => {
-  const ModalContent = ({ children }: { children: JSX.Element }) => {
+  const ModalContent = ({ content }: { content: JSX.Element }) => {
     return (
       <>
         {/* Full Page Overlay */}
@@ -130,7 +91,7 @@ export const Modal = ({
   if (!open) {
     return <></>;
   }
-  return <ModalContent>{content}</ModalContent>;
+  return <ModalContent content={content} />;
 };
 
 export function WorkPage() {
@@ -150,14 +111,27 @@ export function WorkPage() {
     return;
   };
   return (
-    <Page>
+    <Page
+      sections={{
+        nav: (
+          <div style={{ background: "#333", height: "40px", width: "100%" }}>
+            <pre style={{ color: "white" }}>Nav</pre>
+          </div>
+        ),
+        fluid: (
+          <div
+            style={{ background: "cyan", height: "240px", width: "100%" }}
+          ></div>
+        ),
+      }}
+    >
       <Header text={"Portfolio"} />
       <SearchFilter />
       <MasonryGrid
         items={[
           {
             text: "Microsoft Tetra",
-            imgURL: "https://placehold.co/1280x320",
+            imgURL: "https://placehold.co/500",
             onClickFn: () =>
               toggleContent(
                 "Microsoft Tetra",
