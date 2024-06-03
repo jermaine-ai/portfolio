@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 import { useState } from "react";
 import {
   //   BackgroundAnimation,
@@ -15,27 +17,37 @@ type MasonryItemType = {
   onClickFn: VoidFunction;
   link?: string;
 };
+type MasonryGridItemProps = {
+  onClick: VoidFunction;
+};
+
 export const MasonryGrid = ({ items }: { items: Array<MasonryItemType> }) => {
+  const MasonryGridStyles = styled.div`
+    display: flex;
+    overflow-x: scroll;
+    justify-content: space-evenly;
+  `;
+  const MasonryGridItemStyle = styled.div<MasonryGridItemProps>`
+    margin-right: 16px;
+    img {
+      width: 240px;
+      height: 320px;
+    }
+  `;
   return (
-    <div
-      style={{
-        display: "flex",
-        overflowX: "scroll",
-        justifyContent: "space-evenly",
-      }}
-    >
+    <MasonryGridStyles>
       {items.map((_item, _index) => {
         return (
-          <div
-            style={{ marginRight: "16px" }}
+          <MasonryGridItemStyle
+            aria-role="button"
             onClick={() => _item.onClickFn()}
             key={_index}
           >
-            <img alt={_item.text} src={_item.imgURL} width={240} height={320} />
-          </div>
+            <img alt={_item.text} src={_item.imgURL} />
+          </MasonryGridItemStyle>
         );
       })}
-    </div>
+    </MasonryGridStyles>
   );
 };
 export const SearchFilter = () => <pre>Filter</pre>;
@@ -119,13 +131,17 @@ export function WorkPage() {
           </div>
         ),
         fluid: (
-          <div
-            style={{ background: "cyan", height: "240px", width: "100%" }}
-          ></div>
+          <div style={{ width: "100%" }}>
+            <div>
+              <Header text={"Portfolio"} />
+            </div>
+            <div
+              style={{ background: "cyan", height: "440px", width: "100%" }}
+            ></div>
+          </div>
         ),
       }}
     >
-      <Header text={"Portfolio"} />
       <SearchFilter />
       <MasonryGrid
         items={[

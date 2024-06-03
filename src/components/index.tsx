@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 type ButtonType = {
   link: string;
   text: string;
@@ -7,6 +9,7 @@ type CarouselItemType = {
   text: string;
   imgURL: string;
 };
+
 export const BackgroundAnimation = ({ animation }: { animation: string }) => (
   <pre>{"[animation] " + animation}</pre>
 );
@@ -55,25 +58,38 @@ export const Section = ({
   title,
   animation,
   children,
+  text,
 }: {
   hero?: boolean;
   title: string;
+  text?: string;
   animation: string;
   children: React.ReactNode;
 }) => {
+  const StyledSection = styled.section`
+    border: thin solid blue;
+    padding: 24px 120px;
+    line-height: 2;
+  `;
   return (
-    <section>
+    <StyledSection>
       {hero ? (
-        <h2>{"Section title: " + title}</h2>
+        <>
+          <h1>{"Section title: " + title}</h1>
+          <p>{text}</p>
+        </>
       ) : (
-        <h3>{"Section title: " + title}</h3>
+        <>
+          <h2>{"Section title: " + title}</h2>
+          <p>{text}</p>
+        </>
       )}
       <pre>{"Section animation: " + animation}</pre>
       {children}
-    </section>
+    </StyledSection>
   );
 };
-export const Header = ({ text }: { text: string }) => <pre>{text}</pre>;
+export const Header = ({ text }: { text: string }) => <h1>{text}</h1>;
 export const SubHeader = ({ text }: { text: string }) => <pre>{text}</pre>;
 export const Button = {
   Primary: ({ text, link }: ButtonType) => (

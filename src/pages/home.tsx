@@ -8,6 +8,14 @@ import {
   SubHeader,
 } from "../components";
 
+export const Client = () => {
+  return (
+    <div style={{ border: "thin solid grey" }}>
+      <p>Client</p>
+    </div>
+  );
+};
+
 export function HomePage() {
   return (
     <Page
@@ -29,9 +37,17 @@ export function HomePage() {
               overflow: "hidden",
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                maxWidth: "640px",
+                width: "100%",
+              }}
+            >
               <BackgroundAnimation animation={"fluid"} />
-              <Header text={"Hi, I'm Jay - Web, App & Web3 Developer"} />
+              <span>Hi, I'm Jay</span>
+              <Header text={"Web, Mobile & Blockchain Developer"} />
               <SubHeader text={"Building the future, one block at a time."} />
               <ButtonGroup
                 buttons={[
@@ -40,6 +56,19 @@ export function HomePage() {
                   { link: "/contact", text: "Get in Touch" },
                 ]}
               />
+              <div
+                style={{
+                  marginTop: "120px",
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  width: "100%",
+                }}
+              >
+                <Client />
+                <Client />
+                <Client />
+                <Client />
+              </div>
             </div>
           </div>
         ),

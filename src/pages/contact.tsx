@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Header,
   //   BackgroundAnimation,
   //   ButtonGroup,
   //   Carousel,
@@ -70,11 +71,7 @@ export function ContactPage() {
   return (
     <Page
       sections={{
-        nav: (
-          <div style={{ background: "#333", height: "40px", width: "100%" }}>
-            <pre style={{ color: "white" }}>Nav</pre>
-          </div>
-        ),
+        nav: <></>,
         fluid: (
           <div
             style={{ background: "cyan", height: "240px", width: "100%" }}
@@ -82,9 +79,10 @@ export function ContactPage() {
         ),
       }}
     >
-      <pre>Contact Page</pre>
-      <AnimatedTimeline />
+      <h1>Contact</h1>
       <Testimonials />
+      {/* <AnimatedTimeline /> */}
+      <h2>How can I help?</h2>
       <ContactForm />
     </Page>
   );
