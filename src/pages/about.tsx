@@ -1,6 +1,5 @@
 import {
   BackgroundAnimation,
-  ButtonGroup,
   Carousel,
   Header,
   Page,

@@ -6,29 +6,158 @@ import {
   Page,
   SubHeader,
 } from "../components";
+import { useState } from "react";
 
-export const Client = () => {
+const ShowcaseCard = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 640px;
+  min-height: 400px;
+`;
+export const ShowcaseItem = (props: ShowcaseItemType) => {
+  const { id, title } = props;
+  const ShowcaseItemBody = styled.div`
+    margin: 0 16px;
+  `;
+  const ShowcaseItemStyles = styled.li`
+    border: thin solid grey;
+    list-style-type: none;
+    margin: 12px;
+    margin-top: 10px;
+    min-width: 200px;
+    height: 360px;
+    flex: 1;
+    /* width: 100%; */
+    /* max-width: 376px; */
+    text-align: center;
+    justify-content: center;
+    background: lightgreen;
+    display: flex;
+    align-items: center;
+    @media (max-width: 800px) {
+      max-width: unset;
+    }
+  `;
   return (
-    <div style={{ border: "thin solid grey" }}>
-      <p>Client</p>
-    </div>
+    <ShowcaseCard>
+      <ShowcaseItemStyles key={id}>
+        <span>{title}</span>
+      </ShowcaseItemStyles>
+      <ShowcaseItemBody>
+        <h4>{title}</h4>
+        <p>{"C#.NET | React"}</p>
+      </ShowcaseItemBody>
+    </ShowcaseCard>
   );
 };
 
-const ClientSection = styled.section`
-  margin-top: 120px;
+type ShowcaseItemType = {
+  id: string | number;
+  title: string;
+};
+
+const ShowcaseStyles = styled.section`
+  flex-wrap: wrap;
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
   width: 100%;
 `;
+const Showcase = ({
+  filter = "",
+  content,
+}: {
+  filter: string;
+  content: Array<{ category: string; items: Array<ShowcaseItemType> }>;
+}) => {
+  const ShowcaseSectionStyles = styled.section`
+    padding: 80px 4px;
+  `;
+  const ShowcaseCategoryH3 = styled.h3`
+    font-size: 2.4rem;
+    line-height: 2;
+    opacity: 0.7;
+  `;
+  const ShowcaseCategoryStyles = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  `;
+
+  return (
+    <ShowcaseStyles>
+      {content
+        .filter((f) => new RegExp(`${filter}`, "gi").test(f.category))
+        ?.map(({ category, items }) => (
+          <ShowcaseSectionStyles key={category}>
+            <ShowcaseCategoryH3>{category}</ShowcaseCategoryH3>
+            <ShowcaseCategoryStyles>
+              {items.map((i) => (
+                <ShowcaseCard>
+                  <ShowcaseItem key={i.id} {...i} />
+                </ShowcaseCard>
+              ))}
+            </ShowcaseCategoryStyles>
+          </ShowcaseSectionStyles>
+        ))}
+    </ShowcaseStyles>
+  );
+};
+interface TagStyleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  selected?: boolean;
+  clear?: boolean;
+}
+const TagStyles = styled.button<TagStyleProps>`
+  background: ${({ selected }) => (selected ? "black" : "unset")};
+  color: ${({ selected }) => (selected ? "white" : "black")};
+  opacity: ${({ clear }) => (clear ? "0.4" : "unset")};
+  display: flex;
+  margin: 4px 16px;
+  padding: 8px 16px;
+  border: 2px solid black;
+  font-weight: bold;
+  &:hover,
+  &:visited,
+  &:active {
+    color: white;
+    background: black;
+  }
+`;
+
+interface TagProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  id: string;
+  text: string;
+  selected?: string;
+  onClick: (args?: unknown) => unknown;
+  clear?: boolean;
+}
+const Tag = ({ id, clear, text, selected, onClick }: TagProps) => {
+  return (
+    <TagStyles
+      key={id.toString()}
+      clear={clear}
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(text);
+      }}
+      selected={selected?.trim().toUpperCase() === text?.trim().toUpperCase()}
+    >
+      {text.toUpperCase()}
+    </TagStyles>
+  );
+};
+
 const HomeContainer = styled.div`
-  background: cyan;
-  height: 100vh;
+  padding-top: 160px;
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   display: flex;
-  justify-content: center;
-  padding-top: 10%;
-  overflow: hidden;
 `;
 const NavStyles = styled.nav`
   padding: 0 24px;
@@ -38,50 +167,172 @@ const NavStyles = styled.nav`
   top: 0;
   // background: #333;
   height: 40px;
-  width: 100%;
 `;
 const HomeStyles = styled.div`
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  max-width: 640px;
+  flex-wrap: wrap;
+  justify-content: center;
   width: 100%;
+  max-width: 1280px;
+  padding: 96px 24px;
 `;
 
+const TagsWrapper = styled.div`
+  max-width: 800px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const TagCloud = ({
+  tags,
+  selected,
+}: {
+  selected: string;
+  tags: Array<TagProps>;
+}) => {
+  return (
+    <TagsWrapper>
+      {tags.map((tag) => (
+        <Tag
+          id={tag.id}
+          onClick={() => {
+            tag.onClick(tag.text);
+          }}
+          clear={tag.clear}
+          selected={selected}
+          text={tag.text}
+        />
+      ))}
+    </TagsWrapper>
+  );
+};
+
 export function HomePage() {
+  const [_filter, setFilter] = useState("");
   return (
     <Page
       sections={{
-        nav: <></>,
+        nav: (
+          <NavStyles>
+            <pre style={{ color: "white" }}>Nav</pre>
+          </NavStyles>
+        ),
         fluid: (
           <>
             <HomeContainer>
-              <NavStyles>
-                <pre style={{ color: "white" }}>Nav</pre>
-              </NavStyles>
-              <HomeStyles>
-                <BackgroundAnimation animation={"fluid"} />
-                <span>Hi, I'm Jay</span>
-                <Header text={"Web, Mobile & Blockchain Developer"} />
-                <SubHeader text={"Building the future, one block at a time."} />
-                <ButtonGroup
-                  buttons={[
-                    { link: "/work", text: "View My Work" },
-                    { link: "/about", text: "About Me" },
-                    { link: "/contact", text: "Get in Touch" },
-                  ]}
-                />
-                <ClientSection>
-                  <Client />
-                  <Client />
-                  <Client />
-                  <Client />
-                </ClientSection>
-              </HomeStyles>
+              <BackgroundAnimation animation={"fluid"} />
+              <span>Hi, I'm Jay</span>
+              <Header text={"Web, Mobile & Blockchain Developer"} />
+              <SubHeader text={"Building the future, one block at a time."} />
+              <ButtonGroup
+                buttons={[
+                  { link: "/work", text: "View My Work" },
+                  { link: "/about", text: "About Me" },
+                  { link: "/contact", text: "Get in Touch" },
+                ]}
+              />
             </HomeContainer>
           </>
         ),
       }}
     >
+      <HomeStyles>
+        <div>
+          <TagCloud
+            selected={_filter}
+            tags={[
+              {
+                id: "-1",
+                text: "All",
+                clear: true,
+                onClick: () => setFilter(""),
+              },
+              {
+                id: "0",
+                text: "Blockchain",
+                onClick: () => setFilter("blockchain"),
+              },
+              {
+                id: "1",
+                text: "Booking",
+                onClick: () => setFilter("booking"),
+              },
+              {
+                id: "2",
+                text: "E-commerce",
+                onClick: () => setFilter("eCommerce"),
+              },
+              {
+                id: "3",
+                text: "Embedded",
+                onClick: () => setFilter("embedded"),
+              },
+              { id: "4", text: "Finance", onClick: () => setFilter("Finance") },
+              {
+                id: "5",
+                text: "Health",
+                onClick: () => setFilter("health"),
+              },
+              {
+                id: "6",
+                text: "Open Source",
+                onClick: () => setFilter("open source"),
+              },
+              {
+                id: "7",
+                text: "Travel",
+                onClick: () => setFilter("travel"),
+              },
+              {
+                id: "8",
+                text: "Social Network",
+                onClick: () => setFilter("social"),
+              },
+            ]}
+          />
+        </div>
+        <Showcase
+          filter={_filter || ""}
+          content={[
+            {
+              category: "Blockchain + Finance",
+              items: [
+                { title: "Microsoft Tetra", id: 0 },
+                { title: "SupraOracles", id: 1 },
+                { title: "NTT Data", id: 2 },
+              ],
+            },
+            {
+              category: "Booking + Travel",
+              items: [
+                { title: "Pure Skies", id: 3 },
+                { title: "Venue Viper", id: 4 },
+              ],
+            },
+            {
+              category: "Embedded Systems",
+              items: [{ title: "Insuretrail", id: 5 }],
+            },
+            {
+              category: "eCommerce",
+              items: [{ title: "Fox & Turtle", id: 6 }],
+            },
+            {
+              category: "Health + Social",
+              items: [{ title: "Mizuno Dusk", id: 7 }],
+            },
+            {
+              category: "Open Source",
+              items: [
+                { title: "Agave", id: 8 },
+                { title: "Zapfilter", id: 9 },
+              ],
+            },
+          ]}
+        />
+      </HomeStyles>
       <></>
     </Page>
   );

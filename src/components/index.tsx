@@ -27,7 +27,12 @@ export const Page = (props: PageProps) => (
     {/* Nav */}
     {props?.sections?.nav && (
       <div
-        style={{ width: "100%", border: "thin solid blue", display: "flex" }}
+        style={{
+          width: "100%",
+          border: "thin solid blue",
+          display: "flex",
+          overflow: "hidden",
+        }}
       >
         {props.sections?.nav}
       </div>
@@ -35,7 +40,11 @@ export const Page = (props: PageProps) => (
     {/* Fluid */}
     {props?.sections?.fluid && (
       <div
-        style={{ width: "100%", border: "thin solid orange", display: "flex" }}
+        style={{
+          width: "100%",
+          // border: "thin solid orange",
+          display: "flex",
+        }}
       >
         {props.sections?.fluid}
       </div>
@@ -46,7 +55,7 @@ export const Page = (props: PageProps) => (
         margin: "0 auto",
         maxWidth: props?.mainFluid ? "unset" : "1280px",
         width: "100%",
-        border: "thin solid limegreen",
+        // border: "thin solid limegreen",
       }}
     >
       {props?.children}
