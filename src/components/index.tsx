@@ -1,3 +1,5 @@
+import { LinearGradient } from "react-text-gradients";
+import { Linear } from "react-text-gradients/lib/types/types";
 import styled from "styled-components";
 
 type ButtonType = {
@@ -98,7 +100,25 @@ export const Section = ({
     </StyledSection>
   );
 };
-export const Header = ({ text }: { text: string }) => <h1>{text}</h1>;
+export const Header = ({
+  text,
+  colors,
+}: {
+  text: string;
+  colors?: string[];
+}) => (
+  <h1>
+    <LinearGradient
+      gradient={
+        colors
+          ? (["to left", ...colors] as Linear)
+          : (["to left", "#17acff ,#ff68f0"] as Linear)
+      }
+    >
+      {text}
+    </LinearGradient>
+  </h1>
+);
 export const SubHeader = ({ text }: { text: string }) => <pre>{text}</pre>;
 export const Button = {
   Primary: ({ text, link }: ButtonType) => (
@@ -106,21 +126,30 @@ export const Button = {
       <button>{`[Primary] ${text}`}</button>
     </a>
   ),
-  CTA: ({ text, link }: ButtonType) => (
-    <a href={link}>
-      <button>{`[CTA] ${text}`}</button>
-    </a>
-  ),
+  CTA: ({ text, link }: ButtonType) => {
+    const LinkStyles = styled.a`
+      border: none;
+      border: 2px solid black;
+      padding: 4px 8px;
+      background: lightgrey;
+      margin: 1px 4px;
+    `;
+    return <LinkStyles href={link}>{`[CTA] ${text}`}</LinkStyles>;
+  },
 };
 export const ButtonGroup = ({ buttons }: { buttons: Array<ButtonType> }) => {
+  const ButtonGroupStyles = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+  `;
   return (
-    <>
+    <ButtonGroupStyles>
       {buttons.map((_button, index) => (
         <div key={index}>
           <Button.CTA {..._button} />
         </div>
       ))}
-    </>
+    </ButtonGroupStyles>
   );
 };
 export const Carousel = ({ items }: { items: Array<CarouselItemType> }) => (

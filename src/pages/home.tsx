@@ -7,6 +7,7 @@ import {
   SubHeader,
 } from "../components";
 import { useState } from "react";
+import { LinearGradient } from "react-text-gradients";
 
 const ShowcaseCard = styled.div`
   flex: 1;
@@ -29,8 +30,6 @@ export const ShowcaseItem = (props: ShowcaseItemType) => {
     min-width: 200px;
     height: 360px;
     flex: 1;
-    /* width: 100%; */
-    /* max-width: 376px; */
     text-align: center;
     justify-content: center;
     background: lightgreen;
@@ -70,15 +69,24 @@ const Showcase = ({
   content,
 }: {
   filter: string;
-  content: Array<{ category: string; items: Array<ShowcaseItemType> }>;
+  content: Array<{
+    category: string;
+    items: Array<ShowcaseItemType>;
+    description: string;
+  }>;
 }) => {
   const ShowcaseSectionStyles = styled.section`
+    background: none;
     padding: 80px 4px;
   `;
   const ShowcaseCategoryH3 = styled.h3`
     font-size: 2.4rem;
-    line-height: 2;
     opacity: 0.7;
+  `;
+  const ShowcaseCategoryH4 = styled.h4`
+    font-size: 1.8rem;
+    font-weight: 500;
+    opacity: 0.4;
   `;
   const ShowcaseCategoryStyles = styled.div`
     display: flex;
@@ -87,13 +95,26 @@ const Showcase = ({
     justify-content: space-evenly;
   `;
 
+  const HRStyles = styled.div`
+    margin-top: 100px;
+    height: 1px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0);
+    border: none;
+  `;
+
   return (
     <ShowcaseStyles>
       {content
         .filter((f) => new RegExp(`${filter}`, "gi").test(f.category))
-        ?.map(({ category, items }) => (
+        ?.map(({ category, items, description }) => (
           <ShowcaseSectionStyles key={category}>
-            <ShowcaseCategoryH3>{category}</ShowcaseCategoryH3>
+            <ShowcaseCategoryH3>
+              <LinearGradient gradient={["to left", "#17acff ,#ff68f0"]}>
+                {category}
+              </LinearGradient>
+            </ShowcaseCategoryH3>
+            <ShowcaseCategoryH4>{description}</ShowcaseCategoryH4>
             <ShowcaseCategoryStyles>
               {items.map((i) => (
                 <ShowcaseCard>
@@ -101,6 +122,7 @@ const Showcase = ({
                 </ShowcaseCard>
               ))}
             </ShowcaseCategoryStyles>
+            <HRStyles />
           </ShowcaseSectionStyles>
         ))}
     </ShowcaseStyles>
@@ -111,6 +133,7 @@ interface TagStyleProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   clear?: boolean;
 }
 const TagStyles = styled.button<TagStyleProps>`
+  cursor: pointer;
   background: ${({ selected }) => (selected ? "black" : "unset")};
   color: ${({ selected }) => (selected ? "white" : "black")};
   opacity: ${({ clear }) => (clear ? "0.4" : "unset")};
@@ -224,11 +247,11 @@ export function HomePage() {
             <HomeContainer>
               <BackgroundAnimation animation={"fluid"} />
               <span>Hi, I'm Jay</span>
-              <Header text={"Web, Mobile & Blockchain Developer"} />
+              <Header text={"Full Stack & Blockchain Developer"} />
               <SubHeader text={"Building the future, one block at a time."} />
               <ButtonGroup
                 buttons={[
-                  { link: "/work", text: "View My Work" },
+                  // { link: "/work", text: "View My Work" },
                   { link: "/about", text: "About Me" },
                   { link: "/contact", text: "Get in Touch" },
                 ]}
@@ -298,6 +321,7 @@ export function HomePage() {
           content={[
             {
               category: "Blockchain + Finance",
+              description: "Azure",
               items: [
                 { title: "Microsoft Tetra", id: 0 },
                 { title: "SupraOracles", id: 1 },
@@ -306,6 +330,7 @@ export function HomePage() {
             },
             {
               category: "Booking + Travel",
+              description: "Azure",
               items: [
                 { title: "Pure Skies", id: 3 },
                 { title: "Venue Viper", id: 4 },
@@ -313,18 +338,22 @@ export function HomePage() {
             },
             {
               category: "Embedded Systems",
+              description: "Azure",
               items: [{ title: "Insuretrail", id: 5 }],
             },
             {
               category: "eCommerce",
+              description: "Azure",
               items: [{ title: "Fox & Turtle", id: 6 }],
             },
             {
               category: "Health + Social",
+              description: "Azure",
               items: [{ title: "Mizuno Dusk", id: 7 }],
             },
             {
               category: "Open Source",
+              description: "Azure",
               items: [
                 { title: "Agave", id: 8 },
                 { title: "Zapfilter", id: 9 },
